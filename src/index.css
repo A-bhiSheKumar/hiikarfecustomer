@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+
+
+@keyframes fadeOut {
+  from { opacity: 1 }
+  to { opacity: 0 }
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.4s ease forwards;
+}
+
+
+/* Hide scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ===== UC-style subtle borders ===== */
+.border-soft {
+  border: 1px solid #e5e7eb;
+}
+
+
+/* UC style card elevation */
+.card-soft {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* Hover lift (very subtle) */
+.card-soft-hover {
+  transition: all 0.2s ease;
+}
+.card-soft-hover:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* Hover elevation */
+.hover-elevate {
+  transition: all 0.2s ease;
+}
+.hover-elevate:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
