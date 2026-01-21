@@ -1,46 +1,65 @@
 import { useState } from "react";
 import SubCategoryModal from "./modals/SubCategoryModal";
-
-const CATEGORY = {
-  key: "salon",
-  title: "Women's Salon & Spa",
-  subCategories: [
-    { id: "salon", title: "Salon for Women" },
-    { id: "spa", title: "Spa for Women" },
-    { id: "hair", title: "Hair Studio" },
-    { id: "makeup", title: "Makeup & Styling" },
-  ],
-};
+import PrimaryServiceCard from "./PrimaryServiceCard";
+import { PRIMARY_SERVICES } from "../data/primaryServices";
 
 const PrimaryServiceCategories = () => {
-  const [open, setOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [selected, setSelected] = useState<any>(null);
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
+      <section
         className="
-          border-soft border-soft-hover
+          border
+          border-[#EAEAEA]
           rounded-2xl
+          p-6
           bg-white
-          p-4
-          flex flex-col items-center text-center
-          w-40
-          transition
         "
       >
-        <div className="h-16 w-16 rounded-xl bg-gray-100 mb-3" />
+        <h2 className="text-[24px] font-semibold text-gray-700 mb-6">
+          What are you looking for?
+        </h2>
 
-        <p className="text-sm font-medium leading-snug">
-          {CATEGORY.title}
-        </p>
-      </button>
+        <div
+          className="
+            grid
+            grid-cols-2
+            sm:grid-cols-3
+            gap-x-5
+            gap-y-6
+          "
+        >
+          {PRIMARY_SERVICES.map((item) => (
+            <PrimaryServiceCard
+              key={item.key}
+              title={item.title}
+              image={item.image}
+              badge={item.badge}
+              active={item.active}
+              onClick={() => setSelected(item)}
+            />
+          ))}
+        </div>
+      </section>
 
-      <SubCategoryModal
-        open={open}
-        category={CATEGORY}
-        onClose={() => setOpen(false)}
-      />
+      {/* MODAL */}
+      {selected && (
+        <SubCategoryModal
+          open={true}
+          category={{
+            key: selected.key,
+            title: selected.title,
+            subCategories: [
+              { id: "1", title: "Option 1" },
+              { id: "2", title: "Option 2" },
+              { id: "3", title: "Option 3" },
+            ],
+          }}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </>
   );
 };
