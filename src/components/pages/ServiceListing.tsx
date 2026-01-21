@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Star, Clock, Percent, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { nanoid } from "nanoid";
 import StickyCartBar from "../cart/StickyCartBar";
 
 /* ================= TYPES ================= */
 type CartItem = {
-  id: string;
+  lineId: string;       // unique per cart row (React key)
+  productId: string;   // service ID
   title: string;
   price: number;
   quantity: number;
@@ -15,7 +17,6 @@ type CartItem = {
 const ServiceListing = () => {
   const navigate = useNavigate();
 
-  // ✅ SAFE PARAMS
   const { category, subcategory } = useParams<{
     category: string;
     subcategory: string;
@@ -24,25 +25,36 @@ const ServiceListing = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   /* ================= CART HELPERS ================= */
-  const addItem = (item: CartItem) => {
+  const addItem = (product: Omit<CartItem, "lineId" | "quantity">) => {
     setCartItems((prev) => {
-      const existing = prev.find((p) => p.id === item.id);
+      const existing = prev.find(
+        (p) => p.productId === product.productId
+      );
+
       if (existing) {
         return prev.map((p) =>
-          p.id === item.id
+          p.productId === product.productId
             ? { ...p, quantity: p.quantity + 1 }
             : p
         );
       }
-      return [...prev, { ...item, quantity: 1 }];
+
+      return [
+        ...prev,
+        {
+          ...product,
+          lineId: nanoid(),
+          quantity: 1,
+        },
+      ];
     });
   };
 
-  const removeItem = (id: string) => {
+  const removeItem = (productId: string) => {
     setCartItems((prev) =>
       prev
         .map((p) =>
-          p.id === id
+          p.productId === productId
             ? { ...p, quantity: p.quantity - 1 }
             : p
         )
@@ -64,9 +76,10 @@ const ServiceListing = () => {
   const ITEM_ID = "make-your-own-package";
   const ITEM_PRICE = 3183;
 
-  const cartItem = cartItems.find((i) => i.id === ITEM_ID);
+  const cartItem = cartItems.find(
+    (i) => i.productId === ITEM_ID
+  );
 
-  /* ================= SAFE TITLES ================= */
   const pageTitle = subcategory
     ? subcategory.replace(/-/g, " ")
     : "Services";
@@ -150,21 +163,13 @@ const ServiceListing = () => {
 
               <div className="flex flex-col items-center justify-between">
                 <div className="bg-gray-100 rounded-xl px-6 py-4 text-center border-soft">
-                  <Percent
-                    className="mx-auto text-green-700 mb-1"
-                    size={18}
-                  />
-                  <p className="text-3xl font-bold text-green-700">
-                    5%
-                  </p>
+                  <Percent className="mx-auto text-green-700 mb-1" size={18} />
+                  <p className="text-3xl font-bold text-green-700">5%</p>
                   <p className="text-xs text-green-700">OFF</p>
                 </div>
 
                 <div className="text-center mt-4">
                   <p className="font-semibold">₹{ITEM_PRICE}</p>
-                  <p className="text-xs text-gray-400 line-through">
-                    ₹428
-                  </p>
 
                   {cartItem ? (
                     <div className="mt-3 flex items-center gap-2 border-soft rounded-md px-2 py-1">
@@ -174,16 +179,17 @@ const ServiceListing = () => {
                       >
                         −
                       </button>
+
                       <span className="text-sm font-medium">
                         {cartItem.quantity}
                       </span>
+
                       <button
                         onClick={() =>
                           addItem({
-                            id: ITEM_ID,
+                            productId: ITEM_ID,
                             title: "Haircut & massage",
                             price: ITEM_PRICE,
-                            quantity: 1,
                           })
                         }
                         className="px-2 text-lg"
@@ -195,10 +201,9 @@ const ServiceListing = () => {
                     <button
                       onClick={() =>
                         addItem({
-                          id: ITEM_ID,
+                          productId: ITEM_ID,
                           title: "Haircut & massage",
                           price: ITEM_PRICE,
-                          quantity: 1,
                         })
                       }
                       className="mt-3 px-6 py-2 bg-black text-white rounded-md text-sm"
@@ -223,7 +228,7 @@ const ServiceListing = () => {
                 <p className="font-medium">Cart</p>
 
                 {cartItems.map((item) => (
-                  <div key={item.id} className="flex justify-between">
+                  <div key={item.lineId} className="flex justify-between">
                     <span>
                       {item.title} × {item.quantity}
                     </span>
@@ -241,7 +246,6 @@ const ServiceListing = () => {
         </div>
       </section>
 
-      {/* ================= STICKY CART ================= */}
       <StickyCartBar
         itemCount={totalItems}
         totalAmount={totalAmount}

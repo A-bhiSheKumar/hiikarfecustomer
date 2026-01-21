@@ -1,5 +1,5 @@
 import MostBooked from "../home/MostBooked";
-import NewAndNoteworthy from "../home/NewAndNoteworthy";
+// import NewAndNoteworthy from "../home/NewAndNoteworthy";
 import PromoBanner from "../home/PromoBanner";
 import PrimaryServiceCategories from "../PrimaryServiceCategories";
 
@@ -32,19 +32,47 @@ const Home = () => {
 
           {/* RIGHT – VISUAL GRID (PLACEHOLDERS / CMS IMAGES) */}
           <div className="grid grid-cols-2 gap-5">
-            <div className="aspect-[4/5] rounded-3xl bg-gray-100" />
-            <div className="aspect-[4/5] rounded-3xl bg-gray-200 translate-y-10" />
-            <div className="aspect-[4/5] rounded-3xl bg-gray-200" />
-            <div className="aspect-[4/5] rounded-3xl bg-gray-100 translate-y-10" />
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874"
+                alt="Spa massage"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden translate-y-10">
+              <img
+                src="https://images.unsplash.com/photo-1600334129128-685c5582fd35"
+                alt="Relaxing spa therapy"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6"
+                alt="Massage therapy"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden translate-y-10">
+              <img
+                src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1"
+                alt="Wellness spa"
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
+
 
         </div>
       </section>
 
       {/* ================= NEW & NOTEWORTHY ================= */}
-      <section className="max-w-7xl mx-auto px-4">
+      {/* <section className="max-w-7xl mx-auto px-4">
         <NewAndNoteworthy />
-      </section>
+      </section> */}
 
       {/* ================= MOST BOOKED ================= */}
       <section className="max-w-7xl mx-auto px-4">

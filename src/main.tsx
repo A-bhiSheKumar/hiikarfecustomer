@@ -10,6 +10,5 @@ createRoot(document.getElementById('root')!).render(
     <LocationProvider>
       <App />
     </LocationProvider>
-
   </StrictMode>,
 )
